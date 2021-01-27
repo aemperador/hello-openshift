@@ -1,17 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name:
+  name: hello
   labels:
-    app:
+    app: hello
 spec:
-  replicas:
+  replicas: 3
   selector:
     matchLabels:
-      app:
+      app: hello
   template:
     metadata:
       labels:
-        app:
+        app: hello
     spec:
       containers:
+      - resources: {}
+        terminationMessagePath: /dev/termination-log
+        name: hello-openshift
+        env:
+          - name: HELLO
+            valueFrom:
+              fieldRef:
+                apiVersion: v1
+                fieldPath: metadata.name
+        securityContext:
+          capabilities:
+            drop:
+              - MKNOD
+        ports:
+          - name: web
+            containerPort: 80
+            protocol: TCP
+        imagePullPolicy: Always
+        terminationMessagePolicy: File
+        image: >-
+          image-registry.openshift-image-registry.svc:5000/aemperador/hello-openshift

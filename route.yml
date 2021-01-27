@@ -3,13 +3,13 @@ kind: Route
 metadata:
   labels:
     app:
-  name:
+  name: aemperador
 spec:
   port:
     targetPort: web
   to:
-    kind: 
-    name:
+    kind: Service
+    name: hello
     weight: 100
   tls:
     termination:
